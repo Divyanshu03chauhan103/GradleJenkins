@@ -1,7 +1,8 @@
 pipeline {
-    agent any
+    agent any  // Use any available agent
+
     tools {
-        gradle 'Gradle'  // Use globally configured Gradle in Jenkins
+        gradle 'Gradle'  // Ensure this matches the name configured in Jenkins
         jdk 'JDK'
     }
     stages {
@@ -10,22 +11,30 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/Divyanshu03chauhan103/GradleJenkins.git'
             }
         }
+
         stage('Build') {
             steps {
-                sh 'gradle clean build'  // Use globally configured Gradle
+                sh 'gradle build'  // Run Maven build
             }
         }
-        stage('Test') {
-            steps {
-                sh 'gradle test'  // Run tests
-            }
+
+       stage('Test') {
+           steps {
+               sh 'gradle test'  // Run unit tests
+           }
         }
+
+              
         stage('Run Application') {
             steps {
-                sh 'gradle run'  // Run the application
+                // Start the JAR application
+                sh 'gradle run'
             }
         }
+
+        
     }
+
     post {
         success {
             echo 'Build and deployment successful!'
